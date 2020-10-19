@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: incognito
+  labels:
+    app: incognito
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: incognito
+  template:
+    metadata:
+      labels:
+        app: incognito
+    spec:
+      containers:
+        - name: incognito
+          image: "incognitochain/incognito-mainnet:20200910_1"
+          ports:
+            - name: rpc
+              containerPort: 9334
+              protocol: TCP
+            - name: node
+              containerPort: 9433
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 2
+              memory: 1Gi
+          env:
+            - name: MININGKEY
+              value: <Validator Key>
+            - name: GETH_NAME
+              value: mainnet.infura.io/v3/<Infura Project ID>
+            - name: GETH_PROTOCOL
+              value: https
+            - name: GETH_PORT
+              value: ""
+            - name: BOOTNODE_IP
+              value: "mainnet-bootnode.incognito.org:9330"
+            - name: TESTNET
+              value: "false"
+            - name: LIMIT_FEE
+              value: "1"
+            - name: RPC_PORT
+              value: "9334"
+            - name: NODE_PORT
+              value: "9433"
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: incognito-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: incognito-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: incognito
+spec:
+  selector:
+    app: incognito
+  ports:
+    - name: rpc
+      protocol: TCP
+      port: 9334
+    - name: node
+      protocol: TCP
+      port: 9433
