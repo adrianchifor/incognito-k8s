@@ -18,23 +18,25 @@ spec:
     spec:
       containers:
         - name: incognito
-          image: "incognitochain/incognito-mainnet:20200910_1"
+          image:
           ports:
             - name: rpc
               containerPort: 9334
+              hostPort:
               protocol: TCP
             - name: node
               containerPort: 9433
+              hostPort:
               protocol: TCP
           resources:
             requests:
-              cpu: 2
-              memory: 1Gi
+              cpu: 200m
+              memory: 400Mi
           env:
             - name: MININGKEY
-              value: <Validator Key>
+              value:
             - name: GETH_NAME
-              value: mainnet.infura.io/v3/<Infura Project ID>
+              value:
             - name: GETH_PROTOCOL
               value: https
             - name: GETH_PORT
@@ -56,29 +58,12 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: incognito-data
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: incognito-data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: incognito
-spec:
-  selector:
-    app: incognito
-  ports:
-    - name: rpc
-      protocol: TCP
-      port: 9334
-    - name: node
-      protocol: TCP
-      port: 9433
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      -

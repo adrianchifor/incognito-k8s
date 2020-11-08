@@ -1,0 +1,17 @@
+classes:
+  - common
+
+parameters:
+  target_name: aws
+
+  nodes:
+    node4:
+      type: host
+      image: ${mainnet_image}
+      infura_url: ${infura_url}
+      pvc_storage: ${pvc_storage}
+      validator_key: <node4 validator key>
+      node_selector: aws1
+      rpc_port: 9334
+      node_port: 9433
+      public_ip: "<AWS host public IP>"

@@ -1,0 +1,4 @@
+#!/bin/sh
+ssh -fNT -R 0.0.0.0:{{rpc_port}}:127.0.0.1:9334 -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@{{public_ip}}
+ssh -fNT -R 0.0.0.0:{{node_port}}:127.0.0.1:9433 -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@{{public_ip}}
+sleep infinity

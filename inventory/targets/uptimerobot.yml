@@ -1,0 +1,22 @@
+parameters:
+  target_name: uptimerobot
+
+  uptimerobot:
+    version: "0.5.1"
+    api_key: ?{gpg:uptimerobot-api-key}
+    email: your-uptimerobot-user@email.com
+
+  kapitan:
+    compile:
+      - output_path: terraform
+        input_type: kadet
+        output_type: json
+        input_paths:
+          - components/uptimerobot/
+    secrets:
+      gpg:
+        recipients:
+          - name: user@email.com
+            fingerprint: X1234C61F58BEB3ED8552A57E28DC07A3CBFKE7R
+    vars:
+      target: ${target_name}

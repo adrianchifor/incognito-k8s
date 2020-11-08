@@ -1,0 +1,6 @@
+# kapitan refs --write gpg:ssh-key --recipients user@email.com --base64 -f raw_ssh_key
+data: <base64 encrypted ssh key>
+encoding: base64
+recipients:
+- fingerprint: X1234C61F58BEB3ED8552A57E28DC07A3CBFKE7R
+type: gpg

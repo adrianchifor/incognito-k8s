@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: incognito
+  name: node4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: incognito
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: incognito
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - aws1
+      containers:
+        - env:
+            - name: MININGKEY
+              value: <node4 validator key>
+            - name: GETH_NAME
+              value: mainnet.infura.io/v3/<infura project ID>
+            - name: GETH_PROTOCOL
+              value: https
+            - name: GETH_PORT
+              value: ''
+            - name: BOOTNODE_IP
+              value: mainnet-bootnode.incognito.org:9330
+            - name: TESTNET
+              value: 'false'
+            - name: LIMIT_FEE
+              value: '1'
+            - name: RPC_PORT
+              value: '9334'
+            - name: NODE_PORT
+              value: '9433'
+          image: ghcr.io/adrianchifor/incognito-mainnet-arm:mainnet_20201008_1
+          name: incognito
+          ports:
+            - containerPort: 9334
+              hostPort: 9334
+              name: rpc
+              protocol: TCP
+            - containerPort: 9433
+              hostPort: 9433
+              name: node
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 200m
+              memory: 400Mi
+          volumeMounts:
+            - mountPath: /data
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: node4-data

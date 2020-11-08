@@ -1,0 +1,22 @@
+{
+  "terraform": {
+    "required_providers": {
+      "uptimerobot": {
+        "source": "louy/uptimerobot",
+        "version": "0.5.1"
+      }
+    }
+  },
+  "provider": {
+    "uptimerobot": {
+      "api_key": "?{gpg:uptimerobot-api-key:11b060b6}"
+    }
+  },
+  "data": {
+    "uptimerobot_alert_contact": {
+      "default": {
+        "friendly_name": "your-uptimerobot-user@email.com"
+      }
+    }
+  }
+}

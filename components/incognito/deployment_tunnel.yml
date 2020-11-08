@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: incognito
-          image: "incognitochain/incognito-mainnet:20200910_1"
+          image:
           ports:
             - name: rpc
               containerPort: 9334
@@ -28,13 +28,13 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 2
-              memory: 1Gi
+              cpu: 200m
+              memory: 400Mi
           env:
             - name: MININGKEY
-              value: <Validator Key>
+              value:
             - name: GETH_NAME
-              value: mainnet.infura.io/v3/<Infura Project ID>
+              value:
             - name: GETH_PROTOCOL
               value: https
             - name: GETH_PORT
@@ -53,17 +53,20 @@ spec:
             - name: data
               mountPath: /data
         - name: tunnel
-          image: adrianchifor/alpine-ssh:latest
+          image:
           imagePullPolicy: Always
           command:
             - /scripts/tunnel.sh
           livenessProbe:
             exec:
               command:
-                - /usr/bin/pgrep
-                - ssh
+                - /scripts/health.sh
             initialDelaySeconds: 10
             periodSeconds: 60
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
           volumeMounts:
             - name: script
               mountPath: /scripts
@@ -81,33 +84,12 @@ spec:
           secret:
             secretName: incognito-ssh
             defaultMode: 0400
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: incognito-data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 20Gi
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: incognito-ssh-script
-data:
-  tunnel.sh: |
-    #!/bin/sh
-    ssh -fNT -R 0.0.0.0:9334:127.0.0.1:9334 -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@<Public VM>
-    ssh -fNT -R 0.0.0.0:9433:127.0.0.1:9433 -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@<Public VM>
-    sleep infinity
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: incognito-ssh
-type: Opaque
-data:
-  key: <base64 SSH private key>
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      -

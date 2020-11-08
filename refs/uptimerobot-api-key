@@ -1,0 +1,6 @@
+# echo -n "uptimerobot api key" | kapitan refs --write gpg:uptimerobot-api-key --recipients user@email.com -f -
+data: <uptimerobot encrypted API key>
+encoding: original
+recipients:
+- fingerprint: X1234C61F58BEB3ED8552A57E28DC07A3CBFKE7R
+type: gpg

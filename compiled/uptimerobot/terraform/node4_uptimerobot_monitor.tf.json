@@ -1,0 +1,16 @@
+{
+  "resource": {
+    "uptimerobot_monitor": {
+      "node4": {
+        "friendly_name": "node4",
+        "url": "<AWS host public IP>",
+        "type": "port",
+        "sub_type": "custom",
+        "port": 9334,
+        "alert_contact": {
+          "id": "${data.uptimerobot_alert_contact.default.id}"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "resource": {
+    "uptimerobot_monitor": {
+      "node1": {
+        "friendly_name": "node1",
+        "url": "<public VM IP that nodes tunnel to>",
+        "type": "port",
+        "sub_type": "custom",
+        "port": 9334,
+        "alert_contact": {
+          "id": "${data.uptimerobot_alert_contact.default.id}"
+        }
+      }
+    }
+  }
+}

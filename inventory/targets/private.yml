@@ -1,0 +1,47 @@
+classes:
+  - common
+
+parameters:
+  target_name: private
+  public_ip: "<public VM IP that nodes tunnel to>"
+  ssh_key: ?{gpg:ssh-key}
+
+  nodes:
+    node1:
+      type: tunnel
+      image: ${mainnet_image}
+      tunnel_image: ${tunnel_image}
+      infura_url: ${infura_url}
+      pvc_storage: ${pvc_storage}
+      validator_key: <node1 validator key>
+      node_selector: host1
+      rpc_port: 9334
+      node_port: 9433
+      public_ip: ${public_ip}
+      ssh_key: ${ssh_key}
+
+    node2:
+      type: tunnel
+      image: ${mainnet_image}
+      tunnel_image: ${tunnel_image}
+      infura_url: ${infura_url}
+      pvc_storage: ${pvc_storage}
+      validator_key: <node2 validator key>
+      node_selector: host2
+      rpc_port: 9335
+      node_port: 9434
+      public_ip: ${public_ip}
+      ssh_key: ${ssh_key}
+
+    node3:
+      type: tunnel
+      image: ${mainnet_image}
+      tunnel_image: ${tunnel_image}
+      infura_url: ${infura_url}
+      pvc_storage: ${pvc_storage}
+      validator_key: <node3 validator key>
+      node_selector: host3
+      rpc_port: 9336
+      node_port: 9435
+      public_ip: ${public_ip}
+      ssh_key: ${ssh_key}

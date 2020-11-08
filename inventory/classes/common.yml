@@ -1,0 +1,21 @@
+parameters:
+  mainnet_image: ghcr.io/adrianchifor/incognito-mainnet-arm:mainnet_20201008_1
+  tunnel_image: ghcr.io/adrianchifor/alpine-ssh:latest
+
+  infura_url: mainnet.infura.io/v3/<infura project ID>
+  pvc_storage: 1Gi
+
+  kapitan:
+    compile:
+      - output_path: manifests
+        input_type: kadet
+        output_type: yml
+        input_paths:
+          - components/incognito/
+    secrets:
+      gpg:
+        recipients:
+          - name: user@email.com
+            fingerprint: X1234C61F58BEB3ED8552A57E28DC07A3CBFKE7R
+    vars:
+      target: ${target_name}
