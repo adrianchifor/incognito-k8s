@@ -5,7 +5,7 @@ metadata:
 data:
   health.sh: |
     #!/bin/sh
-    if [ $(pgrep ssh | wc -l) -lt 2 ]; then
+    if [ $(pgrep autossh | wc -l) -lt 2 ]; then
       exit 1
     else
       exit 0

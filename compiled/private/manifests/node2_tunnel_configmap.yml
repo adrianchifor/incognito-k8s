@@ -1,16 +1,16 @@
 apiVersion: v1
 data:
-  health.sh: "#!/bin/sh\nif [ $(pgrep ssh | wc -l) -lt 2 ]; then\n  exit 1\nelse\n\
+  health.sh: "#!/bin/sh\nif [ $(pgrep autossh | wc -l) -lt 2 ]; then\n  exit 1\nelse\n\
     \  exit 0\nfi\n"
   tunnel.sh: '#!/bin/sh
 
-    ssh -fNT -R 0.0.0.0:9335:127.0.0.1:9334 -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no
-    -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@<public VM IP that nodes
-    tunnel to>
+    autossh -M 19335 -fNT -R 0.0.0.0:9335:127.0.0.1:9334 -o ExitOnForwardFailure=yes
+    -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@<public
+    VM IP that nodes tunnel to>
 
-    ssh -fNT -R 0.0.0.0:9434:127.0.0.1:9433 -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no
-    -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@<public VM IP that nodes
-    tunnel to>
+    autossh -M 19434 -fNT -R 0.0.0.0:9434:127.0.0.1:9433 -o ExitOnForwardFailure=yes
+    -o StrictHostKeyChecking=no -o ServerAliveInterval=30 -i /ssh-tunnel/key incognito@<public
+    VM IP that nodes tunnel to>
 
     sleep infinity'
 kind: ConfigMap
