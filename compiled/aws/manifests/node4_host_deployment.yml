@@ -63,7 +63,12 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: data
+            - mountPath: /root/.incognito
+              name: appdir
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: node4-data
+        - emptyDir:
+            medium: Memory
+          name: appdir

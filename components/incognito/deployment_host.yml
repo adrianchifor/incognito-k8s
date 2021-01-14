@@ -54,10 +54,15 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /data
+            - name: appdir
+              mountPath: /root/.incognito
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: incognito-data
+        - name: appdir
+          emptyDir:
+            medium: Memory
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

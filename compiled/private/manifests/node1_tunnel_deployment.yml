@@ -61,6 +61,8 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: data
+            - mountPath: /root/.incognito
+              name: appdir
         - command:
             - /scripts/tunnel.sh
           image: ghcr.io/adrianchifor/alpine-ssh:latest
@@ -93,3 +95,6 @@ spec:
           secret:
             defaultMode: 256
             secretName: node1-ssh
+        - emptyDir:
+            medium: Memory
+          name: appdir
